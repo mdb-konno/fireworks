@@ -48,7 +48,7 @@ main { display: block; text-align: center; width: 768px; margin: 20px auto 0 aut
     cursor: pointer;
     position: relative;
 }
-.btnClear span { display: block; }
+.btnClear div { display: block; }
 .sendImg { position: absolute; top:0; left: 0; }
 </style>
 </head>
@@ -60,7 +60,7 @@ main { display: block; text-align: center; width: 768px; margin: 20px auto 0 aut
     </section>
 
     <section class="setColorArea">
-        <button class="btnClear"><img src="./img/trash.svg" class="iconClear"><span>ぜんぶけす</span></button>
+        <button class="btnClear"><img src="./img/trash.svg" class="iconClear"><div>ぜんぶけす</div></button>
         <input type="radio" name="setColor" id="color1" value="#000000"><label for="color1" class="colorPad"></label>
         <input type="radio" name="setColor" id="color2" value="#ffffff" checked><label for="color2" class="colorPad"></label>
         <input type="radio" name="setColor" id="color3" value="#469DCB"><label for="color3" class="colorPad"></label>
@@ -161,7 +161,7 @@ $btnSave.on('click', function(){
     if(canvas._objects.length > 0){
         postApi();
     } else {
-        alert('なにか、かいてね');
+        alert('なにか、かいてねから、ボタンをおしてね');
     }
 });
 

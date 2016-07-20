@@ -193,7 +193,12 @@ DS.on('send', function(data){
 // ***
 // テストモード
 // ***
-// startFire(3); //←保存最大数から取得したい
+function getApi(){
+    return $.get('./api.php');
+}
+
+getApi().done(function(data){ startFire(data); });
+
 
 </script>
 </body>

@@ -96,10 +96,10 @@ var $canvasArea = $('.canvasArea');
 /***
 * Ajax関数
 ***/
-function ajax(){
+function postApi(){
     $.ajax({
         type: 'POST',
-        url: './create.php',
+        url: './api.php',
         data: { canvasImage : canvas.toDataURL() }
     })
     .done(function(data){
@@ -159,7 +159,7 @@ function canvasClear(){
 $btnSave.on('click', function(){
     // 何か描いた場合のみ実行可能。それ以外はアラート表示
     if(canvas._objects.length > 0){
-        ajax();
+        postApi();
     } else {
         alert('なにか、かいてね');
     }

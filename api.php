@@ -27,7 +27,8 @@ if(isset($_POST['canvasImage'])){
     imagepng($image , $dir . 'img' . ($imgNum + 1) . '.png');
 
     echo ($imgNum + 1) . ',' . $dir . 'img' . ($imgNum + 1) . '.png';
+} else if($_SERVER["REQUEST_METHOD"] == "GET"){
+    echo $imgNum;
 }
-
 
 ?>

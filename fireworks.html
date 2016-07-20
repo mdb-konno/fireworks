@@ -197,7 +197,29 @@ function getApi(){
     return $.get('./api.php');
 }
 
-getApi().done(function(data){ startFire(data); });
+function testMode(){
+    getApi().done(function(data){
+        startFire(data);
+    });
+}
+
+if(location.search.split('?')[1] == 'test'){
+    testMode();
+}
+
+
+// ***
+// 画像数取得
+// ***
+function getHanabiNum(){
+    getApi().done(function(data){
+        alert(`現在の花火画像数は、${data} です`);
+    });
+}
+
+if(location.search.split('?')[1] == 'num'){
+    getHanabiNum()
+}
 
 
 </script>

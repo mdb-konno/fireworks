@@ -113,12 +113,12 @@ function postApi(){
         console.log(`通信完了... ID : ${cnt}`);
         DS.send({imgId : cnt});
 
-        $canvasArea.append(`<img src="./img/output/img${cnt}.png" class="sendImg sendImg${cnt}">`);
-        var $targetImg = $(`sendImg${cnt}`);
+        $canvasArea.append(`<img src="./img/output/img${cnt}.png" class="sendImg" id="sendImg${cnt}">`);
+        var $targetImg = $(`#sendImg${cnt}`);
 
-        $targetImg.ready(function(){
+        $targetImg.on('load', function(){
             anime({
-                targets: `.sendImg${cnt}`,
+                targets: `#sendImg${cnt}`,
                 translateY: [0, -700],
                 easing: 'easeInBack',
                 duration: 1000,

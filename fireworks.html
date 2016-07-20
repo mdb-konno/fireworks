@@ -21,7 +21,7 @@ body { margin: 0; background: #000; overflow: hidden; background: url(./img/bg.j
 </head>
 <body>
 
-<main class="sky"></main>
+<main id="sky"></main>
 
 <audio src="./audio/bg.webm" autoplay loop>
 
@@ -38,7 +38,7 @@ var fileNo, timerId;
 var randPro = 2; // **分の1の確率で他の人の花火を表示
 var winW = $(window).width();
 var winH = $(window).height()
-var $sky = $('.sky');
+var $sky = $('#sky');
 var $fireLine = $('.fireLine');
 audio = {};
 
@@ -81,16 +81,16 @@ function createAudio(file, count){
 function firingAnime($targetFire, count, fileNo){
     $targetFire.append(`
         <span class="burst">
-            <img src="./img/output/img${fileNo}.png" class="img img${count} flash">
+            <img src="./img/output/img${fileNo}.png" class="img flash" id="img${count}">
         </span>
     `);
 
     $targetFire.ready(function(){
-        var $img = $(`.img${count}`);
+        var $img = $(`#img${count}`);
         var num = 0;
 
         anime({
-            targets: `.fireworks${count}`,
+            targets: `#fireworks${count}`,
             scale: {
                 value: [0, randPoint(0.4, 0.6, 1)],
                 duration: 1000,
@@ -113,7 +113,7 @@ function firingAnime($targetFire, count, fileNo){
             },
             complete: function(){
                 createAudio('parapara', count);
-                anime.remove(`fireworks${count}`);
+                anime.remove(`#fireworks${count}`);
                 $targetFire.remove();
             },
             loop: false
@@ -127,11 +127,11 @@ function firingAnime($targetFire, count, fileNo){
 * 打ち上げ
 ***/
 function launchFire(count, locationX, fileNo){
-    var $targetFire = $(`.fireworks${count}`);
+    var $targetFire = $(`#fireworks${count}`);
     var tuningY = rand(-200, 200);
 
     anime({
-        targets: `.fireworks${count}`,
+        targets: `#fireworks${count}`,
         translateY: [winH, 500 - tuningY],
         duration: rand(1000, 2000),
         easing: 'easeOutQuad',
@@ -152,7 +152,7 @@ function launchFire(count, locationX, fileNo){
             $targetFire.css({left: `${locationX}%`});
         },
         complete: function(){
-            $(`.fireLine${count}`).remove();
+            $(`#fireLine${count}`).remove();
             $targetFire.css({top: (200 - tuningY) + 'px'});
             firingAnime($targetFire, count, fileNo);
         },
@@ -170,8 +170,8 @@ function startFire(fileNo) {
         var randomNo = rand(1, randPro) == 1 ? rand(1, fileNo) : fileNo;
 
         $sky.append(`
-            <i class="fireworks fireworks${count}">
-                <span class="fireLine fireLine${count}"></span>
+            <i class="fireworks" id="fireworks${count}">
+                <span class="fireLine" id="fireLine${count}"></span>
             </i>
         `);
         launchFire(count, rand(0, 100), randomNo);

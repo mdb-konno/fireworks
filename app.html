@@ -109,16 +109,16 @@ function postApi(){
         alert('画像を保存できませんでした');
     })
     .always(function(data){
-        var cnt = data.split(',')[0];
-        console.log(`通信完了... ID : ${cnt}`);
-        DS.send({imgId : cnt});
+        var count = data.split(',')[0];
+        console.log(`通信完了... ID : ${count}`);
+        DS.send({imgId : count});
 
-        $canvasArea.append(`<img src="./img/output/img${cnt}.png" class="sendImg" id="sendImg${cnt}">`);
-        var $targetImg = $(`#sendImg${cnt}`);
+        $canvasArea.append(`<img src="./img/output/img${count}.png" class="sendImg" id="sendImg${count}">`);
+        var $targetImg = $(`#sendImg${count}`);
 
         $targetImg.on('load', function(){
             anime({
-                targets: `#sendImg${cnt}`,
+                targets: `#sendImg${count}`,
                 translateY: [0, -700],
                 easing: 'easeInBack',
                 duration: 1000,

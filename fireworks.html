@@ -6,22 +6,17 @@
 <title>モニター - 手書き花火</title>
 <style>
 * { box-sizing: border-box; }
-*,
-*::before,
-*::after {
-    will-change: all;
-}
+*, *::before, *::after { will-change: all; }
 
 body { margin: 0; background: #000; overflow: hidden; background: url(./img/bg.jpg); background-size: cover;}
-.fireworks { position: absolute; left: 50%; bottom: 110%; -webkit-transform-origin: center center;}
-.fireworks .fireLine {  width: 10px; height: 200px; background: url(./img/fireline.svg) no-repeat center center;  display: inline-block; }
-.fireworks .burst { position: absolute;  left: -320px;}
-.flash { animation: flashAnime 1s ease-out; }
+.fireworks { position: absolute; left: 50%; bottom: 110%; transform-origin: center center;}
+.fireworks .fireLine {  width: 10px; height: 200px; background: url(./img/fireline.svg) no-repeat center center; display: inline-block; }
+.fireworks .burst { position: absolute; left: -320px; }
+.fireworks .flash { animation: flashAnime 1s ease-out; }
 @keyframes flashAnime {
     0% {-webkit-filter: brightness(1000%)}
     100% {-webkit-filter: brightness(100%)}
 }
-
 </style>
 </head>
 <body>
@@ -35,19 +30,6 @@ body { margin: 0; background: #000; overflow: hidden; background: url(./img/bg.j
 <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/1.0.0/anime.min.js"></script>
 <script>
-/**
- *
- * anime.js - https://github.com/juliangarnier/anime
- * easing - http://easings.net/ja
- *
-
-タスク
-- iPad連携
-- 時々他のサンプル花火が上がる
-- キラキラさせる
-
-**/
-
 /***
 * 設定
 ***/
@@ -142,7 +124,6 @@ function firingAnime($targetFire, count, fileNo){
 }
 
 
-
 /***
 * 打ち上げ
 ***/
@@ -199,23 +180,20 @@ function startFire(fileNo) {
 }
 
 
-
 // ***
 // 作成通知を取得して花火を打ち上げ
 // ***
 DS.on('send', function(data){
-    console.log(timerId);
     clearInterval(timerId);
     if(timerId) {clearInterval(timerId)};
     startFire(data.value.imgId);
 });
 
 
-
 // ***
 // テストモード
 // ***
-// startFire(3);
+// startFire(3); //←保存最大数から取得したい
 
 </script>
 </body>

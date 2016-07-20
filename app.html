@@ -8,10 +8,8 @@
 * { box-sizing: border-box; }
 body { margin: 0; background: #ddd;}
 main { display: block; text-align: center; width: 768px; margin: 20px auto 0 auto; }
-
 .canvasArea { width: 640px; margin: 0 auto; position: relative; }
 #canvas { background: #000; }
-
 .setColorArea { margin: 64px 0; display: flex; position: fixed; bottom: -180px; width: 768px; }
 .setColorArea input[type=radio] { display: none; }
 .setColorArea input[type=radio]:checked + label { position: relative; top: -90px; transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);}
@@ -26,9 +24,7 @@ main { display: block; text-align: center; width: 768px; margin: 20px auto 0 aut
 [for=color7] { background-image: url(./img/crayon/red.png); }
 [for=color8] { background-image: url(./img/crayon/pink.png); }
 [for=color9] { background-image: url(./img/crayon/purple.png); }
-
 .btnArea { margin: 40px 0; }
-
 .btnSave {
     color: #fff;
     background-color: #5cb85c;
@@ -40,7 +36,6 @@ main { display: block; text-align: center; width: 768px; margin: 20px auto 0 aut
     vertical-align: middle;
     cursor: pointer; outline: none;
 }
-
 .btnClear {
     width: 72px; height: 72px;
     text-align: center;
@@ -53,13 +48,8 @@ main { display: block; text-align: center; width: 768px; margin: 20px auto 0 aut
     cursor: pointer;
     position: relative;
 }
-
-.btnClear span {
-    display: block;
-}
-
-/*.sendImg { position: absolute; top: -10px; left: 40px; }*/
-.sendImg { position: absolute; top:0; left: 0;  }
+.btnClear span { display: block; }
+.sendImg { position: absolute; top:0; left: 0; }
 </style>
 </head>
 <body>
@@ -67,7 +57,6 @@ main { display: block; text-align: center; width: 768px; margin: 20px auto 0 aut
 <main>
     <section class="canvasArea">
         <canvas id="canvas" width="640" height="640"></canvas>
-        <!-- <img src="./img/output/img3.png" class="sendImg"> -->
     </section>
 
     <section class="setColorArea">
@@ -86,10 +75,6 @@ main { display: block; text-align: center; width: 768px; margin: 20px auto 0 aut
     <section class="btnArea">
         <button class="btn btnSave">できた！</button>
     </section>
-
-    <output>
-        <!-- <img src="./img/output/img3.png" class="sendImg"> -->
-    </output>
 </main>
 
 <script src="https://cdn.mlkcca.com/v0.6.0/milkcocoa.js"></script>
@@ -106,7 +91,6 @@ var $btnSave = $('.btnSave');
 var $btnClear = $('.btnClear');
 var $setColor = $('[name=setColor]');
 var $canvasArea = $('.canvasArea');
-
 
 
 /***
@@ -151,7 +135,6 @@ function ajax(){
 }
 
 
-
 /***
 * 手書き色設定
 ***/
@@ -174,8 +157,8 @@ function canvasClear(){
 * ユーザーアクション
 ***/
 $btnSave.on('click', function(){
+    // 何か描いた場合のみ実行可能。それ以外はアラート表示
     if(canvas._objects.length > 0){
-        // 何か描いた場合のみ実行可能。それ以外はアラート表示
         ajax();
     } else {
         alert('なにか、かいてね');

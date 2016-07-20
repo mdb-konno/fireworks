@@ -1,0 +1,222 @@
+<!DOCTYPE HTML>
+<html lang="ja-JP">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>モニター - 手書き花火</title>
+<style>
+* { box-sizing: border-box; }
+*,
+*::before,
+*::after {
+    will-change: all;
+}
+
+body { margin: 0; background: #000; overflow: hidden; background: url(./img/bg.jpg); background-size: cover;}
+.fireworks { position: absolute; left: 50%; bottom: 110%; -webkit-transform-origin: center center;}
+.fireworks .fireLine {  width: 10px; height: 200px; background: url(./img/fireline.svg) no-repeat center center;  display: inline-block; }
+.fireworks .burst { position: absolute;  left: -320px;}
+.flash { animation: flashAnime 1s ease-out; }
+@keyframes flashAnime {
+    0% {-webkit-filter: brightness(1000%)}
+    100% {-webkit-filter: brightness(100%)}
+}
+
+</style>
+</head>
+<body>
+
+<main class="sky"></main>
+
+<audio src="./audio/bg.webm" autoplay loop>
+
+<script src="https://cdn.mlkcca.com/v0.6.0/milkcocoa.js"></script>
+<script src="./js/common.js"></script>
+<script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/1.0.0/anime.min.js"></script>
+<script>
+/**
+ *
+ * anime.js - https://github.com/juliangarnier/anime
+ * easing - http://easings.net/ja
+ *
+
+タスク
+- iPad連携
+- 時々他のサンプル花火が上がる
+- キラキラさせる
+
+**/
+
+/***
+* 設定
+***/
+var count = 0;
+var fileNo, timerId;
+var randPro = 2; // **分の1の確率で他の人の花火を表示
+var winW = $(window).width();
+var winH = $(window).height()
+var $sky = $('.sky');
+var $fireWorks = $('.fireworks');
+var $fireLine = $('.fireLine');
+audio = {};
+
+
+// ***
+// 乱数関数
+// ***
+// 整数のみ
+function rand(mn, mx){
+    let r = Math.round(Math.random() * (mx - mn)) + mn;
+    return r;
+}
+
+// 小数点付き
+function randPoint(mn, mx, n){
+    let pow = Math.pow(10, n);
+
+    let r = Math.round((Math.random() * (mx - mn) + mn) * pow) / pow;
+    return r;
+}
+
+
+// ***
+// 音を作成し再生完了後、削除する
+// ***
+function createAudio(file, count){
+    audio['obj' + count] = new Audio();
+    audio['obj' + count].src = `./audio/${file}.webm`;
+    audio['obj' + count].volume = 1;
+    audio['obj' + count].play();
+    audio['obj' + count].addEventListener('ended', function(){
+        delete audio['obj' + 1];
+    }, false);
+}
+
+
+/***
+* 発火
+***/
+function firingAnime($targetFire, count, fileNo){
+    $targetFire.append(`
+        <span class="burst">
+            <img src="./img/output/img${fileNo}.png" class="img img${count} flash">
+        </span>
+    `);
+
+    $targetFire.ready(function(){
+        var $img = $(`.img${count}`);
+        var num = 0;
+
+        anime({
+            targets: `.fireworks${count}`,
+            scale: {
+                value: [0, randPoint(0.4, 0.6, 1)],
+                duration: 1000,
+                easing: 'easeOutQuad'
+            },
+            opacity: {
+                value: [1, 0],
+                delay: 1000,
+                duration: 2000,
+                easing: 'easeOutQuad'
+            },
+            translateY: {
+                value: [-100, -80],
+                delay: 500,
+                duration: 3000,
+                easing: 'easeOutQuad'
+            },
+            begin: function(){
+                createAudio('burst', count);
+            },
+            complete: function(){
+                createAudio('parapara', count);
+                anime.remove(`fireworks${count}`);
+                $targetFire.remove();
+            },
+            loop: false
+        });
+
+  });
+}
+
+
+
+/***
+* 打ち上げ
+***/
+function launchFire(count, locationX, fileNo){
+    var $targetFire = $(`.fireworks${count}`);
+    var tuningY = rand(-200, 200);
+
+    anime({
+        targets: `.fireworks${count}`,
+        translateY: [winH, 500 - tuningY],
+        duration: rand(1000, 2000),
+        easing: 'easeOutQuad',
+        opacity: {
+            value: [1, .0],
+            duration: 2000,
+            easing: 'easeOutQuad'
+        },
+        scaleX: {
+            value: [1, -1],
+            duration: 2000,
+            direction: 'alternate',
+            easing: 'easeOutQuad',
+            loop: true
+        },
+        begin: function(){
+            createAudio('launch', count);
+            $targetFire.css({left: `${locationX}%`});
+        },
+        complete: function(){
+            $(`.fireLine${count}`).remove();
+            $targetFire.css({top: (200 - tuningY) + 'px'});
+            firingAnime($targetFire, count, fileNo);
+        },
+        loop: false
+    });
+}
+
+
+// ***
+// 時々移動させながら着火
+// ***
+function startFire(fileNo) {
+    timerId = setInterval(function(){
+        count++;
+        var randomNo = rand(1, randPro) == 1 ? rand(1, fileNo) : fileNo;
+
+        $sky.append(`
+            <i class="fireworks fireworks${count}">
+                <span class="fireLine fireLine${count}"></span>
+            </i>
+        `);
+        launchFire(count, rand(0, 100), randomNo);
+    }, rand(500, 1500));
+}
+
+
+
+// ***
+// 作成通知を取得して花火を打ち上げ
+// ***
+DS.on('send', function(data){
+    console.log(timerId);
+    clearInterval(timerId);
+    if(timerId) {clearInterval(timerId)};
+    startFire(data.value.imgId);
+});
+
+
+
+// ***
+// テストモード
+// ***
+// startFire(3);
+
+</script>
+</body>
+</html>

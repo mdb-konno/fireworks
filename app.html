@@ -1,0 +1,206 @@
+<!DOCTYPE HTML>
+<html lang="ja-JP">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>アプリ - 手書き花火</title>
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; background: #ddd;}
+main { display: block; text-align: center; width: 768px; margin: 20px auto 0 auto; }
+
+.canvasArea { width: 640px; margin: 0 auto; position: relative; }
+#canvas { background: #000; }
+
+.setColorArea { margin: 64px 0; display: flex; position: fixed; bottom: -180px; width: 768px; }
+.setColorArea input[type=radio] { display: none; }
+.setColorArea input[type=radio]:checked + label { position: relative; top: -90px; transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);}
+.colorPad { width: 50px; height: 197px; flex: 1; cursor: pointer; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);  top: 0;}
+[for^=color] { background: no-repeat center center; background-size: 50px 197px; }
+[for=color1] { background-image: url(./img/crayon/black.png); }
+[for=color2] { background-image: url(./img/crayon/white.png); }
+[for=color3] { background-image: url(./img/crayon/blue.png); }
+[for=color4] { background-image: url(./img/crayon/green.png); }
+[for=color5] { background-image: url(./img/crayon/yellow.png); }
+[for=color6] { background-image: url(./img/crayon/orange.png); }
+[for=color7] { background-image: url(./img/crayon/red.png); }
+[for=color8] { background-image: url(./img/crayon/pink.png); }
+[for=color9] { background-image: url(./img/crayon/purple.png); }
+
+.btnArea { margin: 40px 0; }
+
+.btnSave {
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c; border: 1px solid transparent; border-radius: 4px;
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 32px;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer; outline: none;
+}
+
+.btnClear {
+    width: 72px; height: 72px;
+    text-align: center;
+    background: #000;
+    border-radius: 50%;
+    left: 10px; bottom: 10px;
+    color: #aaa;
+    font-size: 10px;
+    outline: 0; border: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.btnClear span {
+    display: block;
+}
+
+/*.sendImg { position: absolute; top: -10px; left: 40px; }*/
+.sendImg { position: absolute; top:0; left: 0;  }
+</style>
+</head>
+<body>
+
+<main>
+    <section class="canvasArea">
+        <canvas id="canvas" width="640" height="640"></canvas>
+        <!-- <img src="./img/output/img3.png" class="sendImg"> -->
+    </section>
+
+    <section class="setColorArea">
+        <button class="btnClear"><img src="./img/trash.svg" class="iconClear"><span>ぜんぶけす</span></button>
+        <input type="radio" name="setColor" id="color1" value="#000000"><label for="color1" class="colorPad"></label>
+        <input type="radio" name="setColor" id="color2" value="#ffffff" checked><label for="color2" class="colorPad"></label>
+        <input type="radio" name="setColor" id="color3" value="#469DCB"><label for="color3" class="colorPad"></label>
+        <input type="radio" name="setColor" id="color4" value="#46B06F"><label for="color4" class="colorPad"></label>
+        <input type="radio" name="setColor" id="color5" value="#F8C65D"><label for="color5" class="colorPad"></label>
+        <input type="radio" name="setColor" id="color6" value="#E3854A"><label for="color6" class="colorPad"></label>
+        <input type="radio" name="setColor" id="color7" value="#DD4455"><label for="color7" class="colorPad"></label>
+        <input type="radio" name="setColor" id="color8" value="#E369A9"><label for="color8" class="colorPad"></label>
+        <input type="radio" name="setColor" id="color9" value="#575695"><label for="color9" class="colorPad"></label>
+    </section>
+
+    <section class="btnArea">
+        <button class="btn btnSave">できた！</button>
+    </section>
+
+    <output>
+        <!-- <img src="./img/output/img3.png" class="sendImg"> -->
+    </output>
+</main>
+
+<script src="https://cdn.mlkcca.com/v0.6.0/milkcocoa.js"></script>
+<script src="./js/common.js"></script>
+<script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.6.3/fabric.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/amcharts/3.13.0/exporting/rgbcolor.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/1.0.0/anime.min.js"></script>
+<script>
+/***
+* 設定
+***/
+var $btnSave = $('.btnSave');
+var $btnClear = $('.btnClear');
+var $setColor = $('[name=setColor]');
+var $canvasArea = $('.canvasArea');
+
+
+
+/***
+* Ajax関数
+***/
+function ajax(){
+    $.ajax({
+        type: 'POST',
+        url: './create.php',
+        data: { canvasImage : canvas.toDataURL() }
+    })
+    .done(function(data){
+        console.log('通信成功');
+    })
+    .fail(function(data){
+        alert('画像を保存できませんでした');
+    })
+    .always(function(data){
+        var cnt = data.split(',')[0];
+        console.log(`通信完了... ID : ${cnt}`);
+        DS.send({imgId : cnt});
+
+        $canvasArea.append(`<img src="./img/output/img${cnt}.png" class="sendImg sendImg${cnt}">`);
+        var $targetImg = $(`sendImg${cnt}`);
+
+        $targetImg.ready(function(){
+            anime({
+                targets: `.sendImg${cnt}`,
+                translateY: [0, -700],
+                easing: 'easeInBack',
+                duration: 1000,
+                begin: function(){
+                    canvasClear();
+                },
+                complete: function(){
+                    $targetImg.remove();
+                },
+                loop: false
+            });
+        });
+    });
+}
+
+
+
+/***
+* 手書き色設定
+***/
+function setLineColor(color){
+    var colorObj = new RGBColor(color);
+    canvas.freeDrawingBrush.color = colorObj.toRGB();
+    canvas.freeDrawingBrush.setShadow(`0 0 10px rgba(${colorObj.r}, ${colorObj.g}, ${colorObj.b}, 1)`);
+}
+
+
+/***
+* キャンバスクリア
+***/
+function canvasClear(){
+    canvas.clear().renderAll();
+}
+
+
+/***
+* ユーザーアクション
+***/
+$btnSave.on('click', function(){
+    if(canvas._objects.length > 0){
+        // 何か描いた場合のみ実行可能。それ以外はアラート表示
+        ajax();
+    } else {
+        alert('なにか、かいてね');
+    }
+});
+
+$btnClear.on('click', function(){
+    canvasClear();
+});
+
+$setColor.on('change', function(){
+    setLineColor($(this).val());
+});
+
+
+/***
+* 初回実行
+***/
+var canvas = new fabric.Canvas('canvas');
+    canvas.isDrawingMode = true;
+    canvas.freeDrawingBrush.width = 10;
+
+setLineColor($('[name=setColor]:checked').val());
+
+
+</script>
+</body>
+</html>

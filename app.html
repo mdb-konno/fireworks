@@ -10,10 +10,10 @@ body { margin: 0; background: #ddd;}
 main { display: block; text-align: center; width: 768px; margin: 20px auto 0 auto; }
 .canvasArea { width: 640px; margin: 0 auto; position: relative; }
 #canvas { background: #000; }
-.setColorArea { margin: 64px 0; display: flex; position: fixed; bottom: -180px; width: 768px; }
+.setColorArea { margin: 64px 0; display: -webkit-flex; display: flex; position: fixed; bottom: -180px; width: 768px; }
 .setColorArea input[type=radio] { display: none; }
 .setColorArea input[type=radio]:checked + label { position: relative; top: -90px; transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);}
-.colorPad { width: 50px; height: 197px; flex: 1; cursor: pointer; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);  top: 0;}
+.colorPad { width: 50px; height: 197px; -webkit-flex: 1; flex: 1; cursor: pointer; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);  top: 0;}
 [for^=color] { background: no-repeat center center; background-size: 50px 197px; }
 [for=color1] { background-image: url(./img/crayon/black.png); }
 [for=color2] { background-image: url(./img/crayon/white.png); }
@@ -110,15 +110,14 @@ function postApi(){
     })
     .always(function(data){
         var count = data.split(',')[0];
-        console.log(`通信完了... ID : ${count}`);
         DS.send({imgId : count});
 
-        $canvasArea.append(`<img src="./img/output/img${count}.png" class="sendImg" id="sendImg${count}">`);
-        var $targetImg = $(`#sendImg${count}`);
+        $canvasArea.append('<img src="./img/output/img' + count + '.png" class="sendImg" id="sendImg' + count + '">');
+        var $targetImg = $('#sendImg' + count);
 
         $targetImg.on('load', function(){
             anime({
-                targets: `#sendImg${count}`,
+                targets: '#sendImg' + count,
                 translateY: [0, -700],
                 easing: 'easeInBack',
                 duration: 1000,
@@ -141,7 +140,7 @@ function postApi(){
 function setLineColor(color){
     var colorObj = new RGBColor(color);
     canvas.freeDrawingBrush.color = colorObj.toRGB();
-    canvas.freeDrawingBrush.setShadow(`0 0 10px rgba(${colorObj.r}, ${colorObj.g}, ${colorObj.b}, 1)`);
+    canvas.freeDrawingBrush.setShadow('0 0 10px rgba(' + colorObj.r, colorObj.g, colorObj.b, 1 + ')');
 }
 
 

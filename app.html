@@ -141,7 +141,7 @@ function postApi(){
 function setLineColor(color){
     var colorObj = new RGBColor(color);
     canvas.freeDrawingBrush.color = colorObj.toRGB();
-    canvas.freeDrawingBrush.setShadow('0 0 10px rgba(' + colorObj.r, colorObj.g, colorObj.b, 1 + ')');
+    canvas.freeDrawingBrush.setShadow('0 0 20px rgba(' + colorObj.r + ',' + colorObj.g + ',' + colorObj.b + ',' + 1 + ')');
 }
 
 

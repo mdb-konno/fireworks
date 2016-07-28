@@ -28,13 +28,13 @@ body { margin: 0; background: #000; overflow: hidden; background: url(./img/bg.j
 <audio src="./audio/bg.webm" autoplay loop>
 
 <script src="https://cdn.mlkcca.com/v0.6.0/milkcocoa.js"></script>
-<script src="./js/common.js"></script>
 <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/1.0.0/anime.min.js"></script>
+<script src="./js/common.js"></script>
 <script>
-/***
-* 設定
-***/
+// ***
+// 設定
+// ***
 var count = 0;
 var fileNo, timerId;
 var randPro = 2; // **分の1の確率で他の人の花火を表示
@@ -57,7 +57,6 @@ function rand(mn, mx){
 // 小数点付き
 function randPoint(mn, mx, n){
     let pow = Math.pow(10, n);
-
     let r = Math.round((Math.random() * (mx - mn) + mn) * pow) / pow;
     return r;
 }
@@ -120,7 +119,6 @@ function firingAnime($targetFire, count, fileNo){
             },
             loop: false
         });
-
   });
 }
 
@@ -138,7 +136,7 @@ function launchFire(count, locationX, fileNo){
         duration: rand(1000, 2000),
         easing: 'easeOutQuad',
         opacity: {
-            value: [1, .0],
+            value: [1, 0],
             duration: 2000,
             easing: 'easeOutQuad'
         },
@@ -221,8 +219,6 @@ function getHanabiNum(){
 if(location.search.split('?')[1] == 'num'){
     getHanabiNum()
 }
-
-
 </script>
 </body>
 </html>

@@ -80,7 +80,8 @@ function createAudio(file, count){
 function createBgm(){
     audio.bgm = new Audio();
     audio.bgm.src = './audio/bgm.webm';
-    audio.bgm.volume = 0.3;
+    audio.bgm.volume = 0.5;
+    audio.bgm.loop = true;
     audio.bgm.play();
 }
 createBgm();
@@ -187,7 +188,7 @@ function startFire(fileNo) {
             </i>
         `);
         launchFire(count, rand(0, 100), randomNo);
-    }, rand(500, 1500));
+    }, rand(600, 1500));
 }
 
 

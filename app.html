@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="shortcut icon" href="./img/favicon.png">
 <link rel="apple-touch-icon-precomposed" href="./img/favicon.png">
 <title>アプリ - 手書き花火</title>
@@ -18,8 +17,7 @@ main { display: block; text-align: center; width: 768px; margin: 20px auto 0 aut
 .setColorArea input[type=radio] { display: none; }
 .setColorArea input[type=radio]:checked + label { position: relative; top: -90px; transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);}
 .colorPad { width: 50px; height: 197px; -webkit-flex: 1; flex: 1; cursor: pointer; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);  top: 0;}
-[for^=color] { background: no-repeat center center; background-size: 50px 197px; -webkit-tap-highlight-color:rgba(0,0,0,0);
- }
+[for^=color] { background: no-repeat center center; background-size: 50px 197px; -webkit-tap-highlight-color:rgba(0,0,0,0); tap-highlight-color:rgba(0,0,0,0); }
 [for=color1] { background-image: url(./img/crayon/black.png); }
 [for=color2] { background-image: url(./img/crayon/white.png); }
 [for=color3] { background-image: url(./img/crayon/blue.png); }

@@ -117,7 +117,7 @@ function postApi(){
         var count = data.split(',')[0];
         DS.send({imgId : count});
 
-        $canvasArea.append('<img src="./img/output/img' + count + '.png" class="sendImg" id="sendImg' + count + '">');
+        $canvasArea.append('<img src="./img/output/img' + count + '.png?' + $.now() + '" class="sendImg" id="sendImg' + count + '">');
         var $targetImg = $('#sendImg' + count);
 
         $targetImg.on('load', function(){

@@ -80,7 +80,7 @@ function createAudio(file, count){
 function createBgm(){
     audio.bgm = new Audio();
     audio.bgm.src = './audio/bgm.webm';
-    audio.bgm.volume = 0.4;
+    audio.bgm.volume = 0.3;
     audio.bgm.play();
 }
 createBgm();
@@ -90,9 +90,11 @@ createBgm();
 * 発火
 ***/
 function firingAnime($targetFire, count, fileNo){
+    var now = $.now();
+
     $targetFire.append(`
         <span class="burst">
-            <img src="./img/output/img${fileNo}.png" class="img flash" id="img${count}">
+            <img src="./img/output/img${fileNo}.png?${now}" class="img flash" id="img${count}">
         </span>
     `);
 
@@ -104,12 +106,12 @@ function firingAnime($targetFire, count, fileNo){
             targets: `#fireworks${count}`,
             scale: {
                 value: [0, randPoint(0.4, 0.6, 1)],
-                duration: 1000,
+                duration: 500,
                 easing: 'easeOutQuad'
             },
             opacity: {
                 value: [1, 0],
-                delay: 1000,
+                delay: 500,
                 duration: 2000,
                 easing: 'easeOutQuad'
             },

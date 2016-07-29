@@ -25,8 +25,6 @@ body { margin: 0; background: #000; overflow: hidden; background: url(./img/bg.j
 
 <main id="sky"></main>
 
-<audio src="./audio/bg.webm" autoplay loop>
-
 <script src="https://cdn.mlkcca.com/v0.6.0/milkcocoa.js"></script>
 <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/1.0.0/anime.min.js"></script>
@@ -74,6 +72,18 @@ function createAudio(file, count){
         delete audio['obj' + 1];
     }, false);
 }
+
+
+// ***
+// BGM
+// ***
+function createBgm(){
+    audio.bgm = new Audio();
+    audio.bgm.src = './audio/bgm.webm';
+    audio.bgm.volume = 0.4;
+    audio.bgm.play();
+}
+createBgm();
 
 
 /***

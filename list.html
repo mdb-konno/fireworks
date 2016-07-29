@@ -30,15 +30,21 @@ function getApi(){
 function createList(){
     getApi().done(function(data){
         var html = '';
-        for(var i = data; i >= 1; i--){
-            html += `
-                <li>
-                    <img src="./img/output/img${i}.png">
-                    <p>No. ${i}</p>
-                </li>
-            `;
+        var now = $.now();
+
+        if(data != 0){
+            for(var i = data; i >= 1; i--){
+                html += `
+                    <li>
+                        <img src="./img/output/img${i}.png?${now}">
+                        <p>No. ${i}</p>
+                    </li>
+                `;
+            }
+            $output.prepend(html);
+        } else {
+            $output.append('<li><p>画像はありません</p></li>');
         }
-        $output.prepend(html);
     });
 }
 

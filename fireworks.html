@@ -9,7 +9,6 @@
 <style>
 * { box-sizing: border-box; }
 *, *::before, *::after { will-change: all; }
-
 body { margin: 0; background: #000; overflow: hidden; background: url(./img/bg.jpg); background-size: cover;}
 .fireworks { position: absolute; left: 50%; bottom: 110%; transform-origin: center center;}
 .fireworks .fireLine {  width: 10px; height: 200px; background: url(./img/fireline.svg) no-repeat center center; display: inline-block; }
@@ -38,6 +37,7 @@ var fileNo, timerId;
 var randPro = 2; // **分の1の確率で他の人の花火を表示
 var winW = $(window).width();
 var winH = $(window).height()
+var parameter = location.search.split('?')[1];
 var $sky = $('#sky');
 var $fireLine = $('.fireLine');
 audio = {};
@@ -215,7 +215,7 @@ function testMode(){
     });
 }
 
-if(location.search.split('?')[1] == 'test'){
+if(parameter == 'test'){
     testMode();
 }
 
@@ -229,9 +229,11 @@ function getHanabiNum(){
     });
 }
 
-if(location.search.split('?')[1] == 'num'){
+if(parameter == 'num'){
     getHanabiNum()
 }
+
+
 </script>
 </body>
 </html>

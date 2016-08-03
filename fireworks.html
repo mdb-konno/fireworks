@@ -66,7 +66,7 @@ function randPoint(mn, mx, n){
 function createAudio(file, count){
     audio['obj' + count] = new Audio();
     audio['obj' + count].src = `./audio/${file}.webm`;
-    audio['obj' + count].volume = 1;
+    audio['obj' + count].volume = 0.1;
     audio['obj' + count].play();
     audio['obj' + count].addEventListener('ended', function(){
         delete audio['obj' + 1];
@@ -188,7 +188,7 @@ function startFire(fileNo) {
             </i>
         `);
         launchFire(count, rand(0, 100), randomNo);
-    }, rand(600, 1500));
+    }, rand(1000, 2000));
 }
 
 

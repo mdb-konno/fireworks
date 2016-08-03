@@ -9,24 +9,25 @@
 <title>アプリ - 手書き花火</title>
 <style>
 * { box-sizing: border-box; }
+button { border-radius: 0; -webkit-appearance: button; appearance: button; border: none; outline: none; cursor: pointer; -webkit-tap-highlight-color:rgba(0,0,0,0); tap-highlight-color:rgba(0,0,0,0); }
 body { margin: 0; background: #ddd;}
 main { display: block; text-align: center; width: 768px; margin: 20px auto 0 auto; }
 .canvasArea { width: 640px; margin: 0 auto; position: relative; }
 #canvas { background: #000; }
 .setColorArea { margin: 64px 0; display: -webkit-flex; display: flex; position: fixed; bottom: -180px; width: 768px; }
-.setColorArea input[type=radio] { display: none; }
-.setColorArea input[type=radio]:checked + label { position: relative; top: -90px; transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);}
-.colorPad { width: 50px; height: 197px; -webkit-flex: 1; flex: 1; cursor: pointer; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);  top: 0;}
-[for^=color] { background: no-repeat center center; background-size: 50px 197px; -webkit-tap-highlight-color:rgba(0,0,0,0); tap-highlight-color:rgba(0,0,0,0); }
-[for=color1] { background-image: url(./img/crayon/black.png); }
-[for=color2] { background-image: url(./img/crayon/white.png); }
-[for=color3] { background-image: url(./img/crayon/blue.png); }
-[for=color4] { background-image: url(./img/crayon/green.png); }
-[for=color5] { background-image: url(./img/crayon/yellow.png); }
-[for=color6] { background-image: url(./img/crayon/orange.png); }
-[for=color7] { background-image: url(./img/crayon/red.png); }
-[for=color8] { background-image: url(./img/crayon/pink.png); }
-[for=color9] { background-image: url(./img/crayon/purple.png); }
+.colorPad {
+    width: 50px; height: 197px; -webkit-flex: 1; flex: 1; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); top: 0;
+background: no-repeat center center; background-size: 50px 197px; }
+.colorPad.active { position: relative; top: -90px; transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);}
+#color1 { background-image: url(./img/crayon/black.png); }
+#color2 { background-image: url(./img/crayon/white.png); }
+#color3 { background-image: url(./img/crayon/blue.png); }
+#color4 { background-image: url(./img/crayon/green.png); }
+#color5 { background-image: url(./img/crayon/yellow.png); }
+#color6 { background-image: url(./img/crayon/orange.png); }
+#color7 { background-image: url(./img/crayon/red.png); }
+#color8 { background-image: url(./img/crayon/pink.png); }
+#color9 { background-image: url(./img/crayon/purple.png); }
 .btnArea { margin: 40px 0; }
 .btnSave {
     color: #fff;
@@ -64,15 +65,15 @@ main { display: block; text-align: center; width: 768px; margin: 20px auto 0 aut
 
     <section class="setColorArea">
         <button class="btnClear"><img src="./img/trash.svg" class="iconClear"><div>ぜんぶけす</div></button>
-        <input type="radio" name="setColor" id="color1" value="#000000"><label for="color1" class="colorPad"></label>
-        <input type="radio" name="setColor" id="color2" value="#ffffff" checked><label for="color2" class="colorPad"></label>
-        <input type="radio" name="setColor" id="color3" value="#469DCB"><label for="color3" class="colorPad"></label>
-        <input type="radio" name="setColor" id="color4" value="#46B06F"><label for="color4" class="colorPad"></label>
-        <input type="radio" name="setColor" id="color5" value="#F8C65D"><label for="color5" class="colorPad"></label>
-        <input type="radio" name="setColor" id="color6" value="#E3854A"><label for="color6" class="colorPad"></label>
-        <input type="radio" name="setColor" id="color7" value="#DD4455"><label for="color7" class="colorPad"></label>
-        <input type="radio" name="setColor" id="color8" value="#E369A9"><label for="color8" class="colorPad"></label>
-        <input type="radio" name="setColor" id="color9" value="#575695"><label for="color9" class="colorPad"></label>
+        <button id="color1" class="colorPad" data-color="#000000"></button>
+        <button id="color2" class="colorPad active" data-color="#ffffff"></button>
+        <button id="color3" class="colorPad" data-color="#469DCB"></button>
+        <button id="color4" class="colorPad" data-color="#46B06F"></button>
+        <button id="color5" class="colorPad" data-color="#F8C65D"></button>
+        <button id="color6" class="colorPad" data-color="#E3854A"></button>
+        <button id="color7" class="colorPad" data-color="#DD4455"></button>
+        <button id="color8" class="colorPad" data-color="#E369A9"></button>
+        <button id="color9" class="colorPad" data-color="#575695"></button>
     </section>
 
     <section class="btnArea">
@@ -94,6 +95,7 @@ var $btnSave = $('.btnSave');
 var $btnClear = $('.btnClear');
 var $setColor = $('[name=setColor]');
 var $canvasArea = $('.canvasArea');
+var $colorPad = $('.colorPad');
 
 
 /***
@@ -171,8 +173,11 @@ $btnClear.on('click', function(){
     canvasClear();
 });
 
-$setColor.on('change', function(){
-    setLineColor($(this).val());
+$colorPad.on('touchstart click', function(){
+    var num = $(this).attr('id').split('color')[1];
+    $colorPad.removeClass('active');
+    $('#color' + num).addClass('active');
+    setLineColor($(this).data('color'));
 });
 
 
@@ -183,7 +188,7 @@ var canvas = new fabric.Canvas('canvas');
     canvas.isDrawingMode = true;
     canvas.freeDrawingBrush.width = 10;
 
-setLineColor($('[name=setColor]:checked').val());
+setLineColor($('.active').data('color'));
 
 
 </script>

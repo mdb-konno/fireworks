@@ -9,14 +9,21 @@
 <style>
 * { box-sizing: border-box; }
 *, *::before, *::after { will-change: all; }
-body { margin: 0; background: #000; overflow: hidden; background: url(./img/bg.jpg); background-size: cover;}
-.fireworks { position: absolute; left: 50%; bottom: 110%; transform-origin: center center;}
+body { margin: 0; background: url(./img/bg.jpg) no-repeat; background-size: cover; background-blend-mode: hard-light; overflow: hidden; animation: blendAnime 4s cubic-bezier(0.000, 1.650, 1.000, -0.600) alternate infinite; }
+@keyframes blendAnime {
+    0% {background-color: rgba(0,0,0,0); }
+    25% {background-color: rgba(211,68,85,.5); }
+    50% {background-color: rgba(248,198,93,.5); }
+    75% {background-color: rgba(70,176,111,.5); }
+    100% {background-color: rgba(70,157,203,.5); }
+}
+.fireworks { position: absolute; left: 50%; bottom: 110%; transform-origin: center center; }
 .fireworks .fireLine {  width: 10px; height: 200px; background: url(./img/fireline.svg) no-repeat center center; display: inline-block; }
 .fireworks .burst { position: absolute; left: -320px; }
 .fireworks .flash { animation: flashAnime 1s ease-out; }
 @keyframes flashAnime {
-    0% {-webkit-filter: brightness(1000%)}
-    100% {-webkit-filter: brightness(100%)}
+    0% {-webkit-filter: brightness(1000%); }
+    100% {-webkit-filter: brightness(100%); }
 }
 </style>
 </head>
@@ -230,7 +237,7 @@ function getHanabiNum(){
 }
 
 if(parameter == 'num'){
-    getHanabiNum()
+    getHanabiNum();
 }
 
 

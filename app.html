@@ -39,19 +39,20 @@ main { display: block; text-align: center; width: 768px; margin: 20px auto 0 aut
     vertical-align: middle;
     cursor: pointer; outline: none;
 }
-.btnClear {
+.btnClear, .btnUndo {
     width: 72px; height: 72px;
     text-align: center;
     background: #000;
     border-radius: 50%;
-    left: 10px; bottom: 10px;
-    color: #aaa;
+    bottom: 10px;
+    color: #fff;
     font-size: 10px;
     outline: 0; border: none;
     cursor: pointer;
     position: relative;
 }
-.btnClear div { display: block; }
+.btnClear { margin: 0 5px 0 10px; }
+.btnUndo { margin: 0 10px 0 5px; }
 .sendImg { position: absolute; top:0; left: 0; }
 </style>
 </head>
@@ -63,7 +64,8 @@ main { display: block; text-align: center; width: 768px; margin: 20px auto 0 aut
     </section>
 
     <section class="setColorArea">
-        <button class="btnClear"><img src="./img/trash.svg" class="iconClear"><div>ぜんぶけす</div></button>
+        <button class="btnClear"><img src="./img/trash.svg"><div>ぜんぶけす</div></button>
+        <button class="btnUndo"><img src="./img/undo.svg"><div>1つもどる</div></button>
         <button id="color1" class="colorPad" data-color="#000000"></button>
         <button id="color2" class="colorPad active" data-color="#ffffff"></button>
         <button id="color3" class="colorPad" data-color="#469DCB"></button>
@@ -92,9 +94,11 @@ main { display: block; text-align: center; width: 768px; margin: 20px auto 0 aut
 ***/
 var $btnSave = $('.btnSave');
 var $btnClear = $('.btnClear');
+var $btnUndo = $('.btnUndo');
 var $setColor = $('[name=setColor]');
 var $canvasArea = $('.canvasArea');
 var $colorPad = $('.colorPad');
+var touch = ('ontouchstart' in document) ? 'touchstart' : 'click';
 
 
 /***
@@ -159,7 +163,7 @@ function canvasClear(){
 /***
 * ユーザーアクション
 ***/
-$btnSave.on('click', function(){
+$btnSave.on(touch, function(){
     // 何か描いた場合のみ実行可能。それ以外はアラート表示
     if(canvas._objects.length > 0){
         postApi();
@@ -168,11 +172,16 @@ $btnSave.on('click', function(){
     }
 });
 
-$btnClear.on('click', function(){
+$btnUndo.on(touch, function(){
+    canvas._objects.pop();
+    canvas.renderAll();
+});
+
+$btnClear.on(touch, function(){
     canvasClear();
 });
 
-$colorPad.on('touchstart', function(){
+$colorPad.on(touch, function(){
     var num = $(this).attr('id').split('color')[1];
     $colorPad.removeClass('active');
     $('#color' + num).addClass('active');

@@ -85,11 +85,19 @@ function createAudio(file, count){
 // BGM
 // ***
 function createBgm(){
+    // 夏祭り
     audio.bgm = new Audio();
     audio.bgm.src = './audio/bgm.webm';
-    audio.bgm.volume = 0.5;
+    audio.bgm.volume = 1;
     audio.bgm.loop = true;
     audio.bgm.play();
+
+    // ざわめき
+    audio.noise = new Audio();
+    audio.noise.src = './audio/noise.webm';
+    audio.noise.volume = 0.5;
+    audio.noise.loop = true;
+    audio.noise.play();
 }
 createBgm();
 

@@ -47,6 +47,22 @@ var winH = $(window).height()
 var parameter = location.search.split('?')[1];
 var $sky = $('#sky');
 var $fireLine = $('.fireLine');
+var speed = {
+    slow: 2400,
+    nomal: 1200,
+    quick: 600
+};
+var timing = [
+    [0, speed.slow],
+    [32, speed.nomal],
+    [68, speed.quick],
+    [86, speed.nomal],
+    [114, speed.quick],
+    [133, speed.nomal],
+    [157, speed.slow],
+    [183, speed.quick],
+    [214, speed.slow]
+];
 audio = {};
 
 
@@ -100,6 +116,23 @@ function createBgm(){
     audio.noise.play();
 }
 createBgm();
+
+// 経過時間によって花火テンポを変える
+function changeTempo(){
+    let returnSpeed;
+    let time = audio.bgm.currentTime;
+
+    for(var i = 0, tl = timing.length; i < tl; i++){
+        if(time < timing[tl - 1][0]) {
+            if(time >= timing[i][0] && time < timing[i + 1][0]){
+                returnSpeed = timing[i][1];
+            }
+        } else if(time >= timing[tl - 1][0]){
+            returnSpeed = speed.slow;
+        }
+    }
+    return returnSpeed;
+}
 
 
 /***
@@ -193,7 +226,7 @@ function launchFire(count, locationX, fileNo){
 // 時々移動させながら着火
 // ***
 function startFire(fileNo) {
-    timerId = setInterval(function(){
+    (function loop(){
         count++;
         var randomNo = rand(1, randPro) == 1 ? rand(1, fileNo) : fileNo;
 
@@ -203,7 +236,9 @@ function startFire(fileNo) {
             </i>
         `);
         launchFire(count, rand(0, 100), randomNo);
-    }, rand(1000, 2000));
+
+        timerId = setTimeout(loop, changeTempo());
+    })();
 }
 
 
@@ -211,8 +246,7 @@ function startFire(fileNo) {
 // 作成通知を取得して花火を打ち上げ
 // ***
 DS.on('send', function(data){
-    clearInterval(timerId);
-    if(timerId) {clearInterval(timerId)};
+    if(timerId){ clearTimeout(timerId) };
     startFire(data.value.imgId);
 });
 

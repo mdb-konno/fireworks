@@ -89,7 +89,7 @@ function randPoint(mn, mx, n){
 function createAudio(file, count){
     audio['obj' + count] = new Audio();
     audio['obj' + count].src = `./audio/${file}.webm`;
-    audio['obj' + count].volume = 0.1;
+    audio['obj' + count].volume = 1;
     audio['obj' + count].play();
     audio['obj' + count].addEventListener('ended', function(){
         delete audio['obj' + 1];
@@ -104,7 +104,7 @@ function createBgm(){
     // 夏祭り
     audio.bgm = new Audio();
     audio.bgm.src = './audio/bgm.webm';
-    audio.bgm.volume = 1;
+    audio.bgm.volume = 0.4;
     audio.bgm.loop = true;
     audio.bgm.play();
 

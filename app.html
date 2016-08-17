@@ -13,7 +13,6 @@ button { border-radius: 0; -webkit-appearance: button; appearance: button; borde
 body { margin: 0; background: #ddd; user-select: none; -webkit-user-select: none; }
 main { display: block; text-align: center; width: 768px; margin: 20px auto 0 auto; }
 .canvasArea { width: 640px; margin: 0 auto; position: relative; }
-/*#canvas { background: #999; }*/
 #canvas { background: url(img/bg_canvas.png); }
 .setColorArea { margin: 64px 0; display: -webkit-flex; display: flex; position: fixed; bottom: -180px; width: 768px; }
 .colorPad { width: 50px; height: 197px; -webkit-flex: 1; flex: 1; transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55); top: 0; background: no-repeat center center; background-size: 50px 197px; }
@@ -89,9 +88,9 @@ main { display: block; text-align: center; width: 768px; margin: 20px auto 0 aut
 <script src="./js/anime.min.js"></script>
 <script src="./js/common.js"></script>
 <script>
-/***
-* 設定
-***/
+// ***
+// 設定
+// ***
 var $btnSave = $('.btnSave');
 var $btnClear = $('.btnClear');
 var $btnUndo = $('.btnUndo');
@@ -101,9 +100,9 @@ var $colorPad = $('.colorPad');
 var touch = ('ontouchstart' in document) ? 'touchstart' : 'click';
 
 
-/***
-* Ajax関数
-***/
+// ***
+// Ajax関数
+// ***
 function postApi(){
     $.ajax({
         type: 'POST',
@@ -142,9 +141,9 @@ function postApi(){
 }
 
 
-/***
-* 手書き色設定
-***/
+// ***
+// 手書き色設定
+// ***
 function setLineColor(color){
     var colorObj = new RGBColor(color);
     canvas.freeDrawingBrush.color = colorObj.toRGB();
@@ -152,17 +151,17 @@ function setLineColor(color){
 }
 
 
-/***
-* キャンバスクリア
-***/
+// ***
+// キャンバスクリア
+// ***
 function canvasClear(){
     canvas.clear().renderAll();
 }
 
 
-/***
-* ユーザーアクション
-***/
+// ***
+// ユーザーアクション
+// ***
 $btnSave.on(touch, function(){
     // 何か描いた場合のみ実行可能。それ以外はアラート表示
     if(canvas._objects.length > 0){
@@ -189,9 +188,9 @@ $colorPad.on(touch, function(){
 });
 
 
-/***
-* 初回実行
-***/
+// ***
+// 初回実行
+// ***
 var canvas = new fabric.Canvas('canvas');
     canvas.isDrawingMode = true;
     canvas.freeDrawingBrush.width = 10;

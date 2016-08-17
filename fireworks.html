@@ -136,9 +136,9 @@ function changeTempo(){
 }
 
 
-/***
-* 発火
-***/
+// ***
+// 発火
+// ***
 function firingAnime($targetFire, count, fileNo){
     var now = $.now();
 
@@ -185,9 +185,9 @@ function firingAnime($targetFire, count, fileNo){
 }
 
 
-/***
-* 打ち上げ
-***/
+// ***
+// 打ち上げ
+// ***
 function launchFire(count, locationX, fileNo){
     var $targetFire = $(`#fireworks${count}`);
     var tuningY = rand(-200, 200);
@@ -255,20 +255,10 @@ DS.on('send', function(data){
 
 
 // ***
-// テストモード
+// API取得
 // ***
 function getApi(){
     return $.get('./api.php');
-}
-
-function testMode(){
-    getApi().done(function(data){
-        startFire(data);
-    });
-}
-
-if(parameter == 'test'){
-    testMode();
 }
 
 
@@ -284,6 +274,17 @@ function getHanabiNum(){
 if(parameter == 'num'){
     getHanabiNum();
 }
+
+
+// ***
+// 初回実行
+// ***
+function run(){
+    getApi().done(function(data){
+        startFire(data);
+    });
+}
+run();
 
 
 </script>

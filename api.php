@@ -24,7 +24,7 @@ if(isset($_POST["canvasImage"])){
 
     //画像として保存（ディレクトリは任意）
     imagesavealpha($image, TRUE); // 透明色の有効
-    imagepng($image , $dir . "img" . ($imgNum + 1) . ".png");
+    imagepng($image , $dir . "img" . ($imgNum + 1) . ".png", 9);
 
     echo ($imgNum + 1) . "," . $dir . "img" . ($imgNum + 1) . ".png";
 } else if($_SERVER["REQUEST_METHOD"] == "GET"){

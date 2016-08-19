@@ -93,7 +93,7 @@ function createAudio(file, count){
     audio['obj' + count].volume = 1;
     audio['obj' + count].play();
     audio['obj' + count].addEventListener('ended', function(){
-        delete audio['obj' + 1];
+        delete audio['obj' + count];
     }, false);
 }
 
@@ -106,8 +106,10 @@ function createBgm(){
     audio.bgm = new Audio();
     audio.bgm.src = './audio/bgm.webm';
     audio.bgm.volume = 0.4;
-    audio.bgm.loop = true;
     audio.bgm.play();
+    audio.bgm.addEventListener('ended', function(){
+        location.reload(false);
+    }, false);
 
     // ざわめき
     audio.noise = new Audio();
@@ -214,9 +216,9 @@ function launchFire(count, locationX, fileNo){
             $targetFire.css({left: `${locationX}%`});
         },
         complete: function(){
-            $(`#fireLine${count}`).remove();
             $targetFire.css({top: (200 - tuningY) + 'px'});
             firingAnime($targetFire, count, fileNo);
+            anime.remove(`#fireworks${count}`);
         },
         loop: false
     });
@@ -240,6 +242,7 @@ function startFire(fileNo) {
         `);
         launchFire(count, rand(0, 100), randomNo);
 
+        clearTimeout(timerId);
         timerId = setTimeout(loop, changeTempo());
     })();
 }

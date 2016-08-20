@@ -142,11 +142,9 @@ function changeTempo(){
 // 発火
 // ***
 function firingAnime($targetFire, count, fileNo){
-    var now = $.now();
-
     $targetFire.append(`
         <span class="burst">
-            <img src="./img/output/img${fileNo}.png?${now}" class="img flash" id="img${count}">
+            <img src="./img/output/img${fileNo}.png" class="img flash" id="img${count}">
         </span>
     `);
 
@@ -180,6 +178,7 @@ function firingAnime($targetFire, count, fileNo){
                 createAudio('parapara', count);
                 anime.remove(`#fireworks${count}`);
                 $targetFire.remove();
+                $targetFire = null;
             },
             loop: false
         });
@@ -219,6 +218,7 @@ function launchFire(count, locationX, fileNo){
             $targetFire.css({top: (200 - tuningY) + 'px'});
             firingAnime($targetFire, count, fileNo);
             anime.remove(`#fireworks${count}`);
+            $targetFire = null;
         },
         loop: false
     });

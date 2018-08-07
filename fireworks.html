@@ -40,20 +40,20 @@ body { margin: 0; background: url(./img/bg.jpg) no-repeat center; background-siz
 // ***
 // 設定
 // ***
-var count = 0;
-var fileNo, timerId;
-var randPro = 2; // **分の1の確率で他の人の花火を表示
-var winW = $(window).width();
-var winH = $(window).height()
-var parameter = location.search.split('?')[1];
-var $sky = $('#sky');
-var $fireLine = $('.fireLine');
-var speed = {
+const count = 0;
+const fileNo, timerId;
+const randPro = 2; // **分の1の確率で他の人の花火を表示
+const winW = $(window).width();
+const winH = $(window).height()
+const parameter = location.search.split('?')[1];
+const $sky = $('#sky');
+const $fireLine = $('.fireLine');
+const speed = {
     slow: 2400,
     nomal: 1200,
     quick: 600
 };
-var timing = [
+const timing = [
     [0, speed.slow],
     [32, speed.nomal],
     [68, speed.quick],
@@ -125,7 +125,7 @@ function changeTempo(){
     let returnSpeed;
     let time = audio.bgm.currentTime;
 
-    for(var i = 0, tl = timing.length; i < tl; i++){
+    for(let i = 0, tl = timing.length; i < tl; i++){
         if(time < timing[tl - 1][0]) {
             if(time >= timing[i][0] && time < timing[i + 1][0]){
                 returnSpeed = timing[i][1];
@@ -149,8 +149,8 @@ function firingAnime($targetFire, count, fileNo){
     `);
 
     $targetFire.ready(function(){
-        var $img = $(`#img${count}`);
-        var num = 0;
+        let $img = $(`#img${count}`);
+        let num = 0;
 
         anime({
             targets: `#fireworks${count}`,
@@ -190,8 +190,8 @@ function firingAnime($targetFire, count, fileNo){
 // 打ち上げ
 // ***
 function launchFire(count, locationX, fileNo){
-    var $targetFire = $(`#fireworks${count}`);
-    var tuningY = rand(-200, 200);
+    let $targetFire = $(`#fireworks${count}`);
+    let tuningY = rand(-200, 200);
 
     anime({
         targets: `#fireworks${count}`,

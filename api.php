@@ -2,8 +2,10 @@
 /***
 * 設定
 ***/
+ini_set('display_errors', 1); // エラーの出力
+date_default_timezone_set('Asia/Tokyo'); // タイムゾーンの設定
 $dir = "./img/output/";
-$imgNum = count(glob($dir . "*.png")); //ディレクトリ内のPNG数を取得
+$imgNum = count(glob($dir . "*.png")); // ディレクトリ内のPNG数を取得
 
 
 /***

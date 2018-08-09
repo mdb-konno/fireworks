@@ -40,8 +40,8 @@ body { margin: 0; background: url(./img/bg.jpg) no-repeat center; background-siz
 // ***
 // 設定
 // ***
-const count = 0;
-const fileNo, timerId;
+let fileNo, timerId;
+let count = 0;
 const randPro = 2; // **分の1の確率で他の人の花火を表示
 const winW = $(window).width();
 const winH = $(window).height()
@@ -64,7 +64,7 @@ const timing = [
     [185, speed.quick],
     [214, speed.slow]
 ];
-audio = {};
+const audio = {};
 
 
 // ***
